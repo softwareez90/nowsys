@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Über uns | NowSys - Digitale Präzision</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 
+         * DESIGN SYSTEM & VARIABLES
+         * Stil: "Industrial Precision" - Hoher Kontrast, Gitterlinien, Technische Ästhetik
+         */
+        :root {
+            /* Farbpalette: Monochrom mit signalstarkem Akzent */
+            --bg-color: #0a0a0a;
+            --surface-color: #141414;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-color: #00ff9d; /* Neon Mint - Signalisiert "Grünes Licht" / Flow */
+            --border-color: #333333;
+            
+            /* Typografie */
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Space Grotesk', monospace;
+            
+            /* Spacing */
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 8rem;
+            
+            /* Layout */
+            --container-width: 1400px;
+            --border-width: 1px;
+        }
+
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* UTILITIES */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-sm);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-color);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: var(--bg-color);
+        }
+
+        .btn:hover::before {
+            transform: translateY(0);
+        }
+
+        /* GRID BACKGROUND EFFECT */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(var(--border-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+            background-size: 100px 100px;
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            padding: 0 2rem;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        /* MOBILE MENU TOGGLE (Hidden on Desktop) */
+        .menu-toggle {
+            display: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* HERO SECTION - SPLIT LAYOUT */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: stretch;
+            border-bottom: 1px solid var(--border-color);
+            padding-top: 80px; /* Header Height */
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) calc((100vw - var(--container-width)) / 2 + 2rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .hero-visual {
+            flex: 0.8;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animiertes Diagramm im Hero-Visual */
+        .flow-chart {
+            width: 300px;
+            height: 300px;
+            border: 2px solid var(--border-color);
+            position: relative;
+            transform: rotate(45deg);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .flow-chart::before {
+            content: '';
+            position: absolute;
+            top: 20px; left: 20px; right: 20px; bottom: 20px;
+            border: 1px solid var(--accent-color);
+            opacity: 0.5;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotate(45deg) translate(0, 0); }
+            50% { transform: rotate(45deg) translate(-10px, -10px); }
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 5vw, 5rem);
+            line-height: 0.95;
+            margin-bottom: var(--spacing-md);
+        }
+
+        h1 span {
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* TICKER / MARQUEE */
+        .marquee-container {
+            border-bottom: 1px solid var(--border-color);
+            background: var(--accent-color);
+            color: var(--bg-color);
+            padding: 1rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: scroll 20s linear infinite;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* SECTIONS GENERAL */
+        section {
+            padding: var(--spacing-xl) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            margin-bottom: var(--spacing-lg);
+            border-left: 3px solid var(--accent-color);
+            padding-left: 1.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        /* ABOUT / PHILOSOPHY - BENTO GRID */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(2, minmax(250px, auto));
+            gap: 1rem;
+            padding: 0 2rem;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .bento-item {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .bento-item:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .bento-large {
+            grid-column: span 8;
+        }
+
+        .bento-small {
+            grid-column: span 4;
+        }
+
+        .bento-tall {
+            grid-column: span 4;
+            grid-row: span 2;
+        }
+
+        .bento-number {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            color: var(--border-color);
+            line-height: 1;
+        }
+
+        .bento-item:hover .bento-number {
+            color: var(--accent-color);
+        }
+
+        .bento-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .bento-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* SERVICES LIST */
+        .services-list {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .service-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .service-row:hover .service-name {
+            color: var(--accent-color);
+            padding-left: 20px;
+        }
+
+        .service-id {
+            font-family: var(--font-body);
+            color: var(--text-secondary);
+            margin-right: 2rem;
+        }
+
+        .service-name {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            flex-grow: 1;
+            transition: all 0.3s ease;
+        }
+
+        .service-arrow {
+            font-size: 2rem;
+            transform: rotate(-45deg);
+            color: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .service-row:hover .service-arrow {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-color) 0%, #111e18 100%);
+        }
+
+        .cta-content h2 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-lg) 0 var(--spacing-md);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 4rem;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-brand h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-address {
+            color: var(--text-secondary);
+            font-style: normal;
+            margin-top: 1rem;
+        }
+
+        .footer-column h4 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            max-width: var(--container-width);
+            margin: 4rem auto 0;
+            padding: 2rem 2rem 0;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+            }
+            .hero-content {
+                padding: 4rem 2rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .hero-visual {
+                min-height: 400px;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+            .bento-item, .bento-large, .bento-small, .bento-tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nav-wrapper { padding: 0 1rem; }
+            nav { display: none; } /* Simplifiziert für diese Demo */
+            .menu-toggle { display: block; }
+            .service-name { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- GRID BACKGROUND -->
+    <div class="grid-bg"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="nav-wrapper">
+            <a href="index.html" class="logo">NOW<span>SYS</span></a>
+            
+            <nav>
+                <ul>
+                    <li><a href="index.html">Start</a></li>
+                    <li><a href="ueber-uns.html" class="active">Über uns</a></li>
+                    <li><a href="leistungen.html">Leistungen</a></li>
+                    <li><a href="kontakt.html">Kontakt</a></li>
+                </ul>
+            </nav>
+
+            <div class="menu-toggle">☰</div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Die Architekten<br><span>der Logik.</span></h1>
+            <p>NowSys ist mehr als eine Agentur. Wir sind ein Kollektiv aus digitalen Handwerkern, Strategen und Visionären aus Nürnberg. Wir glauben nicht an Zufälle, wir glauben an Systeme.</p>
+            <a href="#philosophie" class="btn">Unsere DNA</a>
+        </div>
+        <div class="hero-visual">
+            <div class="flow-chart"></div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            PRÄZISION • TRANSPARENZ • INNOVATION • NÜRNBERG • SYSTEMARCHITEKTUR • CODE QUALITY • PERFORMANCE • 
+            PRÄZISION • TRANSPARENZ • INNOVATION • NÜRNBERG • SYSTEMARCHITEKTUR • CODE QUALITY • PERFORMANCE •
+        </div>
+    </div>
+
+    <!-- PHILOSOPHIE SECTION (BENTO GRID) -->
+    <section id="philosophie">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Wer wir sind</span>
+                <h2 class="section-title">Die NowSys Formel</h2>
+            </div>
+        </div>
+
+        <div class="bento-grid">
+            <!-- Large Item -->
+            <div class="bento-item bento-large">
+                <div>
+                    <h3 class="bento-title">Kein Code ohne Zweck</h3>
+                    <p class="bento-text">Wir entwickeln keine Websites von der Stange. Jedes Projekt bei NowSys beginnt mit einer tiefgehenden Analyse der Anforderungen. Wir eliminieren Redundanz und fokussieren uns auf reine Performance und Skalierbarkeit. Ästhetik ist bei uns kein Selbstzweck, sondern das Ergebnis perfekter Funktion.</p>
+                </div>
+                <div style="margin-top: 2rem; color: var(--accent-color); font-family: var(--font-display); font-size: 1.2rem;">
+                    // Form follows Function
+                </div>
+            </div>
+
+            <!-- Tall Item -->
+            <div class="bento-item bento-tall">
+                <div>
+                    <h3 class="bento-title">Der Standort</h3>
+                    <p class="bento-text">Verwurzelt in Nürnberg, vernetzt mit der Welt. Fränkische Bodenständigkeit trifft auf Silicon Valley Mindset. Wir arbeiten aus dem Herzen der Stadt für Kunden, die den Unterschied zwischen "gut" und "exzellent" verstehen.</p>
+                </div>
+                <div class="bento-number">NBG</div>
+            </div>
+
+            <!-- Small Item -->
+            <div class="bento-item bento-small">
+                <div class="bento-number">100%</div>
+                <h3 class="bento-title">In-House</h3>
+                <p class="bento-text">Kein Outsourcing. Jede Zeile Code wird hier geschrieben.</p>
+            </div>
+
+            <!-- Small Item -->
+            <div class="bento-item bento-small">
+                <div class="bento-number">24/7</div>
+                <h3 class="bento-title">System-Monitoring</h3>
+                <p class="bento-text">Unsere Systeme schlafen nie. Wir garantieren Stabilität.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HISTORY / TIMELINE (Reusing Services List Style for Consistency) -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Unsere Entwicklung</span>
+                <h2 class="section-title">Meilensteine</h2>
+            </div>
+
+            <div class="services-list">
+                <div class="service-row">
+                    <span class="service-id">2020</span>
+                    <h3 class="service-name">Der Startschuss</h3>
+                    <div class="service-arrow">→</div>
+                </div>
+                
+                <div class="service-row">
+                    <span class="service-id">2022</span>
+                    <h3 class="service-name">Expansion & Enterprise</h3>
+                    <div class="service-arrow">→</div>
+                </div>
+
+                <div class="service-row">
+                    <span class="service-id">2024</span>
+                    <h3 class="service-name">Award Winning Design</h3>
+                    <div class="service-arrow">→</div>
+                </div>
+
+                <div class="service-row">
+                    <span class="service-id">2026</span>
+                    <h3 class="service-name">NowSys Next Gen</h3>
+                    <div class="service-arrow">→</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <div class="container cta-content">
+            <h2>Lassen Sie uns<br>Systeme bauen.</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Erzählen Sie uns von Ihrer Vision. Wir liefern die Architektur.</p>
+            <a href="kontakt.html" class="btn">Projekt anfragen</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>NOW<span style="color: var(--accent-color);">SYS</span></h3>
+                <address class="footer-address">
+                    Hefnersplatz 4<br>
+                    90402 Nürnberg<br><br>
+                    <a href="mailto:sebastian@nowsys.de" style="color: var(--text-primary); border-bottom: 1px solid var(--accent-color);">sebastian@nowsys.de</a>
+                </address>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Startseite</a></li>
+                    <li><a href="ueber-uns.html">Über uns</a></li>
+                    <li><a href="leistungen.html">Leistungen</a></li>
+                    <li><a href="kontakt.html">Kontakt</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Rechtliches</h4>
+                <ul class="footer-links">
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="#">Datenschutz</a></li>
+                    <li><a href="#">AGB</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; 2026 NowSys. Alle Rechte vorbehalten.</span>
+            <span>Designed in Nürnberg.</span>
+        </div>
+    </footer>
+
+</body>
+</html>
